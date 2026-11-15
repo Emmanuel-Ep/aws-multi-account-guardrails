@@ -1,0 +1,33 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyOutsideAustralia",
+      "Effect": "Deny",
+      "NotAction": [
+        "iam:*",
+        "organizations:*",
+        "sts:*",
+        "account:*",
+        "cloudfront:*",
+        "route53:*",
+        "route53domains:*",
+        "waf:*",
+        "shield:*",
+        "globalaccelerator:*",
+        "support:*",
+        "budgets:*",
+        "ce:*",
+        "health:*",
+        "sso:*",
+        "trustedadvisor:*"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": ["ap-southeast-2", "ap-southeast-4"]
+        }
+      }
+    }
+  ]
+}
