@@ -43,3 +43,20 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "cloudtrail_logs" 
     }
   }
 }
+
+locals {
+  trail_name = "org-trail"
+  trail_arn = "arn:aws:cloudtrail:ap-southeast-2:${data.aws_caller_identity.current.account_id}:trail/${local.trail_name}"
+}
+
+resource "aws_s3_bucket_policy" "cloudtrail_logs" {
+  bucket = aws_s3_bucket.cloudtrail_logs.id
+  policy = templatefile("${path.module}/policies/cloudtrail-bucket-policy.json", {
+    bucket_arn = aws_s3_bucket.cloudtrail_logs.arn
+    trail_arn = local.trail_arn
+    account_id = data.aws_caller_identity.current.account_id
+    org_id = data.aws_organizations_organization.current.id
+
+  }
+  )
+}

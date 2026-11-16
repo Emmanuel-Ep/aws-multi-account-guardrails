@@ -58,3 +58,8 @@ resource "aws_organizations_policy_attachment" "region_lock_root" {
   policy_id = aws_organizations_policy.region_lock.id
   target_id = "r-w1d3"
 }
+
+
+
+
+
