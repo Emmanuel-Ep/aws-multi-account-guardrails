@@ -36,7 +36,29 @@
           "aws:SourceArn": "${trail_arn}"
         }
       }
-    }
+    },
+    {
+      "Sid": "DenyDeletingLogs",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": ["s3:DeleteObject", "s3:DeleteObjectVersion"],
+      "Resource": "${bucket_arn}/*"
+
+
+    },
+
+     {
+      "Sid" : "DenyUnencryptedConnections",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": ["${bucket_arn}", "${bucket_arn}/*" ],
+      "Condition": {
+        "Bool": {"aws:SecureTransport": "false"}
+      }
+
+     }
+
   ]
 }
       
