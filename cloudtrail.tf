@@ -60,3 +60,15 @@ resource "aws_s3_bucket_policy" "cloudtrail_logs" {
   }
   )
 }
+
+resource "aws_cloudtrail" "my_trail" {
+  depends_on = [aws_s3_bucket_policy.cloudtrail_logs]
+
+  name = local.trail_name
+  s3_bucket_name = aws_s3_bucket.cloudtrail_logs.id
+  include_global_service_events = true
+  is_organization_trail = true
+  is_multi_region_trail = true
+  enable_log_file_validation = true
+
+}
