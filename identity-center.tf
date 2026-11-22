@@ -4,6 +4,7 @@ data "aws_ssoadmin_instances" "main" {
 locals {
     sso_instance_arn = tolist(data.aws_ssoadmin_instances.main.arns)[0]
     identity_store_id = tolist(data.aws_ssoadmin_instances.main.identity_store_ids)[0]
+    Dev2_account_id = 255260120402
 }
 
 resource "aws_identitystore_group" "developers" {
@@ -65,4 +66,45 @@ resource "aws_identitystore_group_membership" "test" {
   identity_store_id = local.identity_store_id
   group_id          = aws_identitystore_group.developers.group_id
   member_id = aws_identitystore_user.test_user.user_id
+}
+
+resource "aws_ssoadmin_account_assignment" "account" {
+    instance_arn = local.sso_instance_arn
+    permission_set_arn = aws_ssoadmin_permission_set.developer.arn
+
+
+    principal_id = aws_identitystore_group.developers.group_id
+    principal_type = "GROUP"
+
+
+    target_id = aws_organizations_account.sandbox.id
+    target_type = "AWS_ACCOUNT"
+}
+
+
+resource "aws_ssoadmin_account_assignment" "seccurity_auditors_sandbox" {
+    instance_arn = local.sso_instance_arn
+    permission_set_arn = aws_ssoadmin_permission_set.security_auditors.arn
+
+
+    principal_id = aws_identitystore_group.security_auditors.group_id
+    principal_type = "GROUP"
+
+
+    target_id = aws_organizations_account.sandbox.id
+    target_type = "AWS_ACCOUNT"
+}
+
+
+resource "aws_ssoadmin_account_assignment" "security_auditors_dev2" {
+    instance_arn = local.sso_instance_arn
+    permission_set_arn = aws_ssoadmin_permission_set.security_auditors.arn
+
+
+    principal_id = aws_identitystore_group.security_auditors.group_id
+    principal_type = "GROUP"
+
+
+    target_id = local.Dev2_account_id
+    target_type = "AWS_ACCOUNT"
 }

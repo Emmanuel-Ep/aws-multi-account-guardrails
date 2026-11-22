@@ -11,5 +11,5 @@ and Terraform.
 ## Phases
 - [x] Phase 1 — OUs and SCPs (Australia-only Regions, protect CloudTrail)
 - [x] Phase 2 — Organisation-wide CloudTrail into a locked log bucket
-- [ ] Phase 3 — IAM Identity Center with permission sets
+- [x] Phase 3 — IAM Identity Center with permission sets
 - [ ] Phase 4 — GuardDuty across all accounts
