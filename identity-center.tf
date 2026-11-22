@@ -108,3 +108,5 @@ resource "aws_ssoadmin_account_assignment" "security_auditors_dev2" {
     target_id = local.Dev2_account_id
     target_type = "AWS_ACCOUNT"
 }
+
+

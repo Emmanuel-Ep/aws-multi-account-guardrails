@@ -13,3 +13,11 @@ provider "aws" {
   
 }
 
+provider "aws" {
+  alias = "security"
+  region = "ap-southeast-2"
+
+assume_role {
+  role_arn = "arn:aws:iam::${aws_organizations_account.security.id}:role/OrganizationAccountAccessRole"  
+}
+}
